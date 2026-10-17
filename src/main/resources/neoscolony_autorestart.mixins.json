@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8.7",
+  "package": "dev.neoscolony.autorestart.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ScreenImplMixin",
+    "RestartScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

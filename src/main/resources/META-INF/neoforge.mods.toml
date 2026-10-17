@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[4,5)"
+license="MIT"
+[[mods]]
+modId="neoscolony_autorestart"
+version="1.0.0"
+displayName="Neos Colony AutoModpack AutoRestart"
+description="Client-only Windows restart after completed AutoModpack updates. Windows x64 / Java 21."
+[[mixins]]
+config="neoscolony_autorestart.mixins.json"
+[[dependencies.neoscolony_autorestart]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.251]"
+ordering="NONE"
+side="CLIENT"
+[[dependencies.neoscolony_autorestart]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="CLIENT"
+[[dependencies.neoscolony_autorestart]]
+modId="automodpack_mod"
+type="required"
+versionRange="[4.0.6]"
+ordering="AFTER"
+side="CLIENT"

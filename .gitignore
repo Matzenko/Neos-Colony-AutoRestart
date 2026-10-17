@@ -1,0 +1,19 @@
+# Build outputs, reference libraries and machine-specific evidence
+/out/
+/dist/
+/temp/
+/reference/
+/test-results/
+**/out-v4/
+**/dist/
+**/temp/
+**/test-results/
+**/runs/
+**/manifest-v4.mf
+*.log
+*.local.md
+/TEST-REPORT.md
+/TEST3-REPORT.md
+/DEPENDENCY-FIX-REPORT.md
+/.idea/
+/.vscode/
