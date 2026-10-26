@@ -1,0 +1,7 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+[[mods]]
+modId="dialogprobe"
+version="1"
+displayName="Isolated AutoRestart dialog probe"

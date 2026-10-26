@@ -137,6 +137,7 @@ public final class ModTests{
         }
         check(commitBeforeStop&&abortOnFailure,"Minecraft stop remains after successful helper commit with abort on failure");
 
+        n+=TrustedServerTests.run();
         n+=ReleaseEquivalenceTests.run(own);
         n+=ServerSideTests.run(own);
         n+=DistributionTests.run(own,outer);

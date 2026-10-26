@@ -71,12 +71,13 @@ function Javac([string]$source,[string]$output,[string]$classpath,[string]$argna
  $arguments=@('--release','21','-encoding','UTF-8','-proc:none','-classpath',('"'+$classpath.Replace('\','/')+'"'),'-d',('"'+$output.Replace('\','/')+'"'))
  $arguments+=Get-ChildItem -LiteralPath $source -Recurse -Filter *.java|ForEach-Object {'"'+$_.FullName.Replace('\','/')+'"'}
  Write-Local "temp\$argname" ($arguments -join [Environment]::NewLine)
- & $javac "@temp\$argname"
- if($LASTEXITCODE -ne 0){throw 'javac failed'}
+ $previousPreference=$ErrorActionPreference
+ try {$ErrorActionPreference="Continue"; & $javac "@temp\$argname"; $compilerExit=$LASTEXITCODE} finally {$ErrorActionPreference=$previousPreference}
+ if($compilerExit -ne 0){throw 'javac failed'}
 }
 Javac 'src\main\java' $classes $cp 'main.args'
 Copy-Item -Path 'src\main\resources\*' -Destination $classes -Recurse
-$artifact=Join-Path $PSScriptRoot "dist\neos-colony-automodpack-autorestart-1.21.1-1.0.0-$run.jar"
+$artifact=Join-Path $PSScriptRoot "dist\neos-colony-automodpack-autorestart-1.21.1-1.0.1-$run.jar"
 & $jar --create --file $artifact -C $classes .
 if($LASTEXITCODE -ne 0){throw 'jar failed'}
 Javac 'src\test\java' $tests "$classes;$cp" 'tests.args'
@@ -88,7 +89,7 @@ $services=Join-Path $tests 'META-INF\services'
 [IO.File]::WriteAllText((Join-Path $services 'org.spongepowered.asm.service.IGlobalPropertyService'),'dev.neoscolony.autorestart.OfflineProperties',[Text.UTF8Encoding]::new($false))
 & $java "-Djava.io.tmpdir=$PSScriptRoot\temp" -cp "$tests;$artifact;$AutoModpackJar;$PSScriptRoot\reference\automodpack-mod-4.0.6.jar;$cp" dev.neoscolony.autorestart.OfflineMixinTest 2>&1 | Tee-Object -FilePath 'test-results\latest-mixins.txt'
 if($LASTEXITCODE -ne 0){throw 'Offline Mixin tests failed'}
-$stable=Join-Path $PSScriptRoot 'dist\neos-colony-automodpack-autorestart-1.21.1-1.0.0.jar'
+$stable=Join-Path $PSScriptRoot 'dist\neos-colony-automodpack-autorestart-1.21.1-1.0.1.jar'
 Copy-Item -LiteralPath $artifact -Destination $stable
 $artifact=$stable
 Write-Local 'test-results\latest-artifact.txt' $artifact
@@ -108,7 +109,7 @@ foreach($inputPath in $externalHashes.Keys){
  if((Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash -ne $externalHashes[$inputPath]){throw 'External original input changed'}
 }
 $result=[ordered]@{
- version='1.0.0'
+ version='1.0.1'
  status='RELEASE_BUILD_AND_AUTOMATED_TESTS_PASSED'
  assertions=[int]$m.Groups[1].Value
  offlineMixinTransformations=2
@@ -119,7 +120,7 @@ $result=[ordered]@{
  restartCoreUnchanged=$true
  autoModpackSha256=(Get-FileHash -LiteralPath $AutoModpackJar -Algorithm SHA256).Hash
  guiSha256=if($GuiJar){(Get-FileHash -LiteralPath $GuiJar -Algorithm SHA256).Hash}else{$null}
- inGameTest='TEST3_SUCCESS_REPORTED_BY_USER; RELEASE_LOGIC_UNCHANGED'
+ inGameTest='RESTART_CORE_UNCHANGED; NEW_DIALOG_FLOW_REQUIRES_ISOLATED_CLIENT_CHECK'
 }
 Write-Local 'test-results\release-build.json' ($result|ConvertTo-Json)
 

@@ -3,7 +3,7 @@ loaderVersion="[4,5)"
 license="MIT"
 [[mods]]
 modId="neoscolony_autorestart"
-version="1.0.0"
+version="1.0.1"
 displayName="Neos Colony AutoModpack AutoRestart"
 description="Client-only Windows restart after completed AutoModpack updates. Windows x64 / Java 21."
 [[mixins]]

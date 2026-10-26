@@ -17,3 +17,9 @@
 /DEPENDENCY-FIX-REPORT.md
 /.idea/
 /.vscode/
+
+/test-runtime/.gradle/
+/test-runtime/build/
+/test-runtime/run/
+/test-runtime/.vscode/
+/private/

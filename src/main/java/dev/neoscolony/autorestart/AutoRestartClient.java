@@ -25,7 +25,7 @@ public final class AutoRestartClient{
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST,true,ScreenEvent.Opening.class,AutoRestartClient::openingBefore);
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST,true,ScreenEvent.Opening.class,AutoRestartClient::openingAfter);
         NeoForge.EVENT_BUS.addListener(AutoRestartClient::tick);
-        LOG.info("[NeosAutoRestart] {} Version 1.0.0; explicit restart request + opening event required.",enabled?"ACTIVE":"DISABLED_VERSION");
+        LOG.info("[NeosAutoRestart] {} Version 1.0.1; explicit restart request + opening event required.",enabled?"ACTIVE":"DISABLED_VERSION");
     }
     private static boolean version(String id,String exact){
         return ModList.get().getModContainerById(id).map(c->c.getModInfo().getVersion().toString().equals(exact)).orElse(false);
@@ -48,12 +48,14 @@ public final class AutoRestartClient{
     private static void openingBefore(ScreenEvent.Opening event){
         if(!enabled)return;
         try{
-            if(GATE.beginOpening(event,event.getNewScreen()))LOG.info("[NeosAutoRestart] RESTART_OPENING_CAPTURED");
+            TrustedDialogs.before(event);
+            if(GATE.beginOpening(event,event.getNewScreen())){TrustedDialogs.restartAuthorized(event);LOG.info("[NeosAutoRestart] RESTART_OPENING_CAPTURED");}
         }catch(Throwable e){failure("OPENING_BEFORE",e);}
     }
     private static void openingAfter(ScreenEvent.Opening event){
         if(!enabled)return;
         try{
+            TrustedDialogs.after(event);
             Object screen=event.getNewScreen();
             if(GATE.finishOpening(event,screen,event.isCanceled()))
                 LOG.info("[NeosAutoRestart] RESTART_REQUEST_CONFIRMED target={}",screen.getClass().getName());
@@ -81,7 +83,7 @@ public final class AutoRestartClient{
         }).thenAccept(prepared->mc.execute(()->{
             synchronized(AutoRestartClient.class){
                 busy=false;
-                if(prepared==null)return;
+                if(prepared==null){TrustedDialogs.failedPreparation(mc,request.screen());return;}
                 if(mc.screen!=request.screen()||mc.level!=null||mc.hasSingleplayerServer()){
                     prepared.close();LOG.info("[NeosAutoRestart] CANCELLED_SCREEN_CHANGED");return;
                 }
