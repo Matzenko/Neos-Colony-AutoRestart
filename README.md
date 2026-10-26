@@ -4,7 +4,14 @@
 
 1.0.1 korrigiert ausschließlich die Dialogübergänge für eine explizit konfigurierte private Serververbindung. Die bisherigen GUI-Pins passen laut echten Laufzeitlogs nicht mehr zu den Verbindungsadressen/Modpack-Ports; der Zertifikatsfingerabdruck stimmt weiterhin. Der vorhandene Neustartkern bleibt unverändert.
 
-**Erforderliche einmalige Einrichtung:** [docs/trusted-server.example.properties](docs/trusted-server.example.properties) mit den fünf administrativ geprüften Zielwerten als `config/neoscolony-autorestart-trusted.properties` in jedem Client bereitstellen. Keine privaten Werte ins öffentliche Git übernehmen. Die vorbereitete lokale Datei unter `private/` wird nicht installiert und nicht veröffentlicht. Ohne gültige Konfiguration bleiben die bisherigen Sicherheitsdialoge bestehen. Beim Update einer laufenden Instanz kann die neue Logik erst nach Laden der neuen JAR greifen.
+## Automatische Einrichtung für alle Spieler
+
+Das private Serverpaket verteilt JAR 1.0.1 und die vorhandene Vertrauensdatei über den separaten AutoModpack-Hostinhalt. Spieler müssen keine Konfigurationsdateien kopieren; nur die erste eigene Server-Vertrauensentscheidung bleibt bestehen. Die öffentliche JAR enthält weiterhin keine privaten Zielwerte.
+
+Der Administrator verwendet das lokal vorbereitete private Paket und [deployment/SERVERPAKET.md](deployment/SERVERPAKET.md). Paketvorbereitung aus vorhandener geprüfter private/neoscolony-autorestart-trusted.properties: deployment/New-PrivateServerPackage.ps1. Niemals das erzeugte private ZIP auf GitHub hochladen. [Prüfbericht und verbleibende Serverinstallation](docs/ROLLOUT-1.0.1.md).
+
+
+**Alternative einmalige manuelle Einrichtung:** [docs/trusted-server.example.properties](docs/trusted-server.example.properties) mit den fünf administrativ geprüften Zielwerten als `config/neoscolony-autorestart-trusted.properties` in jedem Client bereitstellen. Keine privaten Werte ins öffentliche Git übernehmen. Die vorbereitete lokale Datei unter `private/` wird nicht installiert und nicht veröffentlicht. Ohne gültige Konfiguration bleiben die bisherigen Sicherheitsdialoge bestehen. Beim Update einer laufenden Instanz kann die neue Logik erst nach Laden der neuen JAR greifen.
 
 Danach bleibt das erste Fenster mit „JARs herunterladen“ und „Zurück“ erhalten. Der Klick delegiert direkt an den bisherigen Download. Nach bestätigtem Erfolg erscheint nur „Minecraft wird neu gestartet ...“, während die vorhandene Integritäts-/Helferprüfung und der bestehende AutoRestart laufen. Bei gescheiterter Vorbereitung bleibt der manuelle Fallback erhalten. Fremde Server und normale Beenden-Vorgänge behalten ihr Verhalten.
 
