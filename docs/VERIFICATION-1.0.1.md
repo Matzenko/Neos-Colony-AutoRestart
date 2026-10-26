@@ -35,3 +35,7 @@ RestartEngine.java und alle zugehÃ¶rigen kompilierten Engine-Klassen, UpdateGate
 Die neue Ã¶ffentliche JAR enthÃ¤lt keine privaten Zielwerte. Vor Einsatz bei jedem Client genau eine administrativ geprÃ¼fte Datei config/neoscolony-autorestart-trusted.properties bereitstellen, siehe trusted-server.example.properties. Sie kann Ã¼ber den vorhandenen AutoModpack-Konfigurationsabgleich verteilt werden; vorhandene Serverregeln wurden nicht geÃ¤ndert. Eine aus aktueller gespeicherter Verbindung abgeleitete, gegen den bereits vorhandenen GUI-Zertifikatspin geprÃ¼fte lokale Vorlage liegt ausschlieÃŸlich im ignorierten private/; sie ist nicht installiert und wird nicht verÃ¶ffentlicht.
 
 Ohne diese Datei werden Sicherheitsdialoge ausdrÃ¼cklich beibehalten. Bei Adress-, Port- oder Zertifikatswechsel ist die Konfiguration bewusst neu zu prÃ¼fen.
+
+## Veröffentlichung verifiziert
+
+Quellcommit eafc8e00d24ea751a284e4acf22ce5d40dc53507; Downloadcommit f48d4ebf7356be9336e6679e8d80f9f98ceb8773. JAR unter downloads/1.0.1/neos-colony-automodpack-autorestart-1.21.1-1.0.1.jar und Release v1.0.1 veröffentlicht. Beide veröffentlichten Dateien erneut abgerufen und bytegleich mit dem geprüften Produktionsartefakt bestätigt: 44548 Bytes, SHA-256 afe7944786348f93b57255f4512740afab5f504fd68aee9bffc57c8e15c9b2cd. Exakter master-Dateipfad und GitHub-html_url geprüft; keine interaktive Browserprüfung durchgeführt.
